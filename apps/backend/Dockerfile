@@ -13,6 +13,7 @@ COPY --from=builder /app/dist ./dist
 COPY package*.json ./
 RUN npm install --only=production
 RUN addgroup -g 1001 -S nodejs && adduser -S nodejs -u 1001
+RUN mkdir -p /app/src && chown -R nodejs:nodejs /app
 USER nodejs
 EXPOSE 3000
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
