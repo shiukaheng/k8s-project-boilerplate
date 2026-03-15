@@ -1,0 +1,11 @@
+enabled: false
+host: dev.local
+className: ""
+tls:
+  enabled: false
+frontend:
+  serviceName: frontend
+  port: 80
+backend:
+  serviceName: backend
+  port: 3000

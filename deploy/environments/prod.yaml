@@ -1,0 +1,4 @@
+kubeContext: k3s-ldn
+
+labels:
+  environment: prod

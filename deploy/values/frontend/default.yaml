@@ -1,0 +1,5 @@
+image:
+  tag: latest
+ingress:
+  enabled: false
+  host: app.local

@@ -1,0 +1,37 @@
+repositories:
+  - name: stable
+    url: https://charts.helm.sh/stable
+
+---
+
+environments:
+  dev:
+    values:
+      - environments/dev.yaml
+  prod:
+    values:
+      - environments/prod.yaml
+
+---
+
+releases:
+  - name: frontend
+    chart: ../charts/frontend
+    values:
+      - values/frontend/common.yaml
+      - values/frontend/{{ .Environment.Name }}.yaml
+    namespace: default
+
+  - name: backend
+    chart: ../charts/backend
+    values:
+      - values/backend/common.yaml
+      - values/backend/{{ .Environment.Name }}.yaml
+    namespace: default
+
+  - name: ingress
+    chart: ./templates/ingress
+    values:
+      - ./templates/ingress/values.yaml
+      - ./templates/ingress/{{ .Environment.Name }}.yaml
+    namespace: default

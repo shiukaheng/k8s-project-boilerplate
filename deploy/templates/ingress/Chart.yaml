@@ -1,0 +1,4 @@
+apiVersion: v2
+name: ingress
+description: Combined ingress for frontend and backend
+version: 0.1.0
