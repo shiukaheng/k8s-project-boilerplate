@@ -1,8 +1,9 @@
 {
-  "name": "k8s-project-boilerplate",
+  "name": "workspace",
   "private": true,
   "workspaces": [
-    "apps/*"
+    "apps/*",
+    "packages/*"
   ],
   "scripts": {
     "dev": "npm run dev --workspaces",

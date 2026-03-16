@@ -3,20 +3,22 @@
 # Build frontend with dev Dockerfile
 docker_build(
     "frontend",
-    context="apps/frontend",
-    dockerfile="apps/frontend/Dockerfile.dev",
+    context="workspace",
+    dockerfile="workspace/apps/frontend/Dockerfile.dev",
     live_update=[
-        sync("apps/frontend/src", "/app/src"),
+        sync("workspace/apps/frontend/src", "/workspace/apps/frontend/src"),
+        sync("workspace/packages/lib/src", "/workspace/packages/lib/src"),
     ],
 )
 
 # Build backend with dev Dockerfile
 docker_build(
     "backend",
-    context="apps/backend",
-    dockerfile="apps/backend/Dockerfile.dev",
+    context="workspace",
+    dockerfile="workspace/apps/backend/Dockerfile.dev",
     live_update=[
-        sync("apps/backend/src", "/app/src"),
+        sync("workspace/apps/backend/src", "/workspace/apps/backend/src"),
+        sync("workspace/packages/lib/src", "/workspace/packages/lib/src"),
     ],
 )
 
