@@ -3,6 +3,10 @@ repositories:
     url: https://charts.helm.sh/stable
   - name: bitnami
     url: https://charts.bitnami.com/bitnami
+  - name: runix
+    url: https://helm.runix.net
+  - name: ectobit
+    url: https://charts.ectobit.com
 
 ---
 
@@ -24,6 +28,11 @@ releases:
     values:
       - values/postgres/common.yaml
       - values/postgres/{{ .Environment.Name }}.yaml
+
+  - name: pgweb
+    chart: ectobit/pgweb
+    values:
+      - values/pgweb/common.yaml
 
   - name: frontend
     chart: ../charts/frontend
