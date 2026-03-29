@@ -79,6 +79,10 @@ spec:
               echo "Waiting for graphql-engine..."
               until (echo > /dev/tcp/127.0.0.1/8080) 2>/dev/null; do sleep 1; done
               METADATA=$(cat /hasura-metadata/metadata.json)
+              # Support both raw metadata {"version":3,...} and console export format {"resource_version":N,"metadata":{...}}
+              if echo "$METADATA" | grep -q '"resource_version"'; then
+                METADATA=$(echo "$METADATA" | python3 -c "import sys,json; print(json.dumps(json.load(sys.stdin)['metadata']))")
+              fi
               BODY="{\"type\":\"replace_metadata\",\"version\":2,\"args\":{\"allow_inconsistent_metadata\":false,\"metadata\":${METADATA}}}"
               LEN=${#BODY}
               exec 3<>/dev/tcp/127.0.0.1/8080
