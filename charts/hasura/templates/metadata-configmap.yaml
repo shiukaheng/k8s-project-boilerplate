@@ -1,0 +1,18 @@
+{{- if .Values.metadataJson }}
+{{- $metadataStr := "" }}
+{{- if kindIs "string" .Values.metadataJson }}
+  {{- $metadataStr = .Values.metadataJson | trim }}
+{{- else }}
+  {{- $metadataStr = .Values.metadataJson | toJson }}
+{{- end }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "common.name" . }}-metadata
+  namespace: {{ template "common.namespace" . }}
+  labels:
+    {{- include "common.labels" . | nindent 4 }}
+data:
+  metadata.json: |-
+{{ $metadataStr | indent 4 }}
+{{- end }}

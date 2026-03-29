@@ -44,7 +44,7 @@ releases:
     namespace: default
 
   - name: hasura
-    chart: hasura/graphql-engine
+    chart: ../charts/hasura
     namespace: default
     values:
       - values/hasura/common.yaml

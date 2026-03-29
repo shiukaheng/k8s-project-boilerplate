@@ -1,0 +1,48 @@
+{{- if (.Values.metadataPostgres).enabled }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "common.prefix" . }}-metadata-postgres
+  namespace: {{ template "common.namespace" . }}
+  labels:
+    app: {{ include "common.prefix" . }}-metadata-postgres
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ include "common.prefix" . }}-metadata-postgres
+  template:
+    metadata:
+      labels:
+        app: {{ include "common.prefix" . }}-metadata-postgres
+    spec:
+      containers:
+        - name: postgres
+          image: {{ coalesce (.Values.metadataPostgres).image "postgres:16-alpine" }}
+          env:
+            - name: POSTGRES_PASSWORD
+              value: {{ coalesce (.Values.metadataPostgres).password "hasura" | quote }}
+            - name: PGDATA
+              value: /var/lib/postgresql/data/pgdata
+          ports:
+            - containerPort: 5432
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/postgresql/data
+      volumes:
+        - name: data
+          emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "common.prefix" . }}-metadata-postgres
+  namespace: {{ template "common.namespace" . }}
+spec:
+  selector:
+    app: {{ include "common.prefix" . }}-metadata-postgres
+  ports:
+    - port: 5432
+      targetPort: 5432
+{{- end }}

@@ -2,16 +2,10 @@
 postgres:
   enabled: false
 
-# Configure Hasura to use existing PostgreSQL
+# Hasura secrets
 secret:
-  # Connection string to existing PostgreSQL
-  # Format: postgres://user:password@host:port/database
-  metadataDbUrl: "postgres://postgres:password@postgres-postgresql:5432/postgres"
-  
-  # Admin secret for Hasura console
   adminSecret: "hasura"
-  
-  # Add database URL for data source (needed when not using metadataOnly)
+  # Database URL for application data (separate from metadata DB)
   extraSecrets:
     HASURA_GRAPHQL_DATABASE_URL: "postgres://postgres:password@postgres-postgresql:5432/postgres"
 
@@ -29,3 +23,25 @@ service:
 # Health check
 healthChecks:
   enabled: true
+
+# Declarative metadata — applied on every container start via replace_metadata API.
+# Paste the output of Hasura Console "Export metadata" (JSON) here.
+# The pod will automatically roll whenever this value changes (checksum annotation).
+metadataJson: |
+  {
+    "version": 3,
+    "sources": [
+      {
+        "name": "default",
+        "kind": "postgres",
+        "tables": [],
+        "configuration": {
+          "connection_info": {
+            "database_url": {
+              "from_env": "HASURA_GRAPHQL_DATABASE_URL"
+            }
+          }
+        }
+      }
+    ]
+  }
