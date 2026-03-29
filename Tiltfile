@@ -58,3 +58,10 @@ k8s_resource(
   port_forwards=8091,
   resource_deps=['postgres-postgresql']
 )
+
+# GraphiQL IDE (connects to Hasura at localhost:8091)
+k8s_resource(
+  workload='graphiql',
+  port_forwards=8093,
+  resource_deps=['hasura-graphql-engine']
+)

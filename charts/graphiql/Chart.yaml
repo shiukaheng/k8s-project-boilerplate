@@ -1,0 +1,4 @@
+apiVersion: v2
+name: graphiql
+description: GraphiQL IDE for exploring Hasura GraphQL
+version: 0.1.0

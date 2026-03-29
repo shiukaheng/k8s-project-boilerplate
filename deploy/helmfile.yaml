@@ -48,3 +48,9 @@ releases:
     namespace: default
     values:
       - values/hasura/common.yaml
+
+  - name: graphiql
+    chart: ../charts/graphiql
+    namespace: default
+    values:
+      - values/graphiql/common.yaml

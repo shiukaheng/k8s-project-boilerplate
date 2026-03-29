@@ -1,0 +1,3 @@
+graphql:
+  endpoint: "http://localhost:8091/v1/graphql"
+  adminSecret: "hasura"

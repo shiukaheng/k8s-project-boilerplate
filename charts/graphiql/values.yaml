@@ -1,0 +1,15 @@
+replicaCount: 1
+
+image:
+  repository: nginx
+  tag: alpine
+  pullPolicy: IfNotPresent
+
+service:
+  port: 80
+  type: ClusterIP
+
+# GraphQL endpoint as seen from the browser (port-forwarded address)
+graphql:
+  endpoint: "http://localhost:8091/v1/graphql"
+  adminSecret: "hasura"
