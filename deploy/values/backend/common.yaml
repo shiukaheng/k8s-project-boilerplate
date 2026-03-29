@@ -1,3 +1,7 @@
 image:
   repository: shiukaheng/todo-backend
   tag: 66a4541
+
+ingress:
+  enabled: false
+  host: dev.local

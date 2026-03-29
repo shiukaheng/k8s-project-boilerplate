@@ -1,4 +1,0 @@
-kubeContext: k3s-hk
-
-labels:
-  environment: dev

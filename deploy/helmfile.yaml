@@ -12,16 +12,6 @@ repositories:
 
 ---
 
-environments:
-  dev:
-    values:
-      - environments/dev.yaml
-  prod:
-    values:
-      - environments/prod.yaml
-
----
-
 releases:
 
   - name: postgres
@@ -29,7 +19,6 @@ releases:
     namespace: default
     values:
       - values/postgres/common.yaml
-      - values/postgres/{{ .Environment.Name }}.yaml
 
   - name: pgweb
     chart: ectobit/pgweb
@@ -40,21 +29,18 @@ releases:
     chart: ../charts/frontend
     values:
       - values/frontend/common.yaml
-      - values/frontend/{{ .Environment.Name }}.yaml
     namespace: default
 
   - name: backend
     chart: ../charts/backend
     values:
       - values/backend/common.yaml
-      - values/backend/{{ .Environment.Name }}.yaml
     namespace: default
 
   - name: ingress
     chart: ./templates/ingress
     values:
       - ./templates/ingress/values.yaml
-      - ./templates/ingress/{{ .Environment.Name }}.yaml
     namespace: default
 
   - name: hasura
@@ -62,4 +48,3 @@ releases:
     namespace: default
     values:
       - values/hasura/common.yaml
-      - values/hasura/{{ .Environment.Name }}.yaml
