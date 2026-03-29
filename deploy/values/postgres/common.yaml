@@ -1,2 +1,6 @@
 auth:
   postgresPassword: "password"
+
+primary:
+  persistence:
+    enabled: false
