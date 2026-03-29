@@ -1,0 +1,31 @@
+# Use existing PostgreSQL instead of deploying a new one
+postgres:
+  enabled: false
+
+# Configure Hasura to use existing PostgreSQL
+secret:
+  # Connection string to existing PostgreSQL
+  # Format: postgres://user:password@host:port/database
+  metadataDbUrl: "postgres://postgres:password@postgres-postgresql:5432/postgres"
+  
+  # Admin secret for Hasura console
+  adminSecret: "hasura"
+  
+  # Add database URL for data source (needed when not using metadataOnly)
+  extraSecrets:
+    HASURA_GRAPHQL_DATABASE_URL: "postgres://postgres:password@postgres-postgresql:5432/postgres"
+
+# Enable console for development
+config:
+  enableConsole: true
+  devMode: true
+  metadataOnly: false  # Use this DB for both metadata AND application data
+
+# Expose port for console
+service:
+  port: 8081
+  targetPort: 8080
+
+# Health check
+healthChecks:
+  enabled: true

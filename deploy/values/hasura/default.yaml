@@ -1,0 +1,32 @@
+# Use existing PostgreSQL instead of deploying a new one
+postgres:
+  enabled: false
+
+# Connect to existing PostgreSQL service (bitnami)
+env:
+  # Database connection - uses same PostgreSQL as the app
+  HASURA_GRAPHQL_METADATA_DATABASE_URL: postgres://postgres:password@postgres:5432/postgres
+  HASURA_GRAPHQL_DATABASE_URL: postgres://postgres:password@postgres:5432/postgres
+  
+  # Enable console for development
+  HASURA_GRAPHQL_ENABLE_CONSOLE: "true"
+  
+  # Dev mode (more verbose logging, can be disabled in prod)
+  HASURA_GRAPHQL_DEV_MODE: "true"
+  
+  # Admin secret - override in environment-specific values
+  HASURA_GRAPHQL_ADMIN_SECRET: "hasura"
+
+# Expose port for console
+service:
+  port: 8080
+  targetPort: 8080
+
+# Health check
+healthChecks:
+  enabled: true
+  readinessProbe:
+    enabled: true
+    path: /healthz
+    initialDelaySeconds: 5
+    periodSeconds: 10

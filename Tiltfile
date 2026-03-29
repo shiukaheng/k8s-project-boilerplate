@@ -9,3 +9,8 @@ k8s_resource(
   workload='pgweb',
   port_forwards=8888,
 )
+
+k8s_resource(
+  workload='hasura-graphql-engine',
+  port_forwards=8081,
+)

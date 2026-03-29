@@ -1,0 +1,5 @@
+# Development environment overrides
+
+config:
+  enableConsole: true
+  devMode: true

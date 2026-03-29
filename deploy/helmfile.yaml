@@ -7,6 +7,8 @@ repositories:
     url: https://helm.runix.net
   - name: ectobit
     url: https://charts.ectobit.com
+  - name: hasura
+    url: https://hasura.github.io/helm-charts
 
 ---
 
@@ -54,3 +56,10 @@ releases:
       - ./templates/ingress/values.yaml
       - ./templates/ingress/{{ .Environment.Name }}.yaml
     namespace: default
+
+  - name: hasura
+    chart: hasura/graphql-engine
+    namespace: default
+    values:
+      - values/hasura/common.yaml
+      - values/hasura/{{ .Environment.Name }}.yaml

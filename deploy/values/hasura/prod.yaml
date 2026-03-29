@@ -1,0 +1,18 @@
+# Production environment overrides
+
+# Disable console in production (security)
+# Access via hasura-cli instead
+env:
+  HASURA_GRAPHQL_ENABLE_CONSOLE: "false"
+  HASURA_GRAPHQL_DEV_MODE: "false"
+  # Admin secret should come from Kubernetes Secret in production
+  # HASURA_GRAPHQL_ADMIN_SECRET: "${HASURA_ADMIN_SECRET}"
+
+# Resource limits for production
+resources:
+  limits:
+    cpu: 1000m
+    memory: 1Gi
+  requests:
+    cpu: 100m
+    memory: 256Mi

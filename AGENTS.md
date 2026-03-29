@@ -41,7 +41,7 @@ This project follows a **six-layer architecture** (see FILE_STRUCTURE.md):
 | **Packaging** | Helm 3 |
 | **Deployment** | Helmfile |
 | **Dev Iteration** | Tilt |
-| **API Layer** | Hasura (planned) |
+| **API Layer** | Hasura GraphQL Engine |
 
 ---
 
@@ -51,9 +51,13 @@ This project follows a **six-layer architecture** (see FILE_STRUCTURE.md):
 - Helm charts for `frontend` and `backend` (deployment + service templates)
 - Helmfile orchestration with dev/prod environments
 - External charts: PostgreSQL (bitnami), pgweb (ectobit)
+- **Hasura GraphQL Engine** integration with official Helm chart
+- **Hasura configuration**: Project structure, CLI config, migration directories
+- **Tilt integration**: Port-forward for Hasura console at localhost:8080
+- **PostgreSQL connection**: Hasura uses existing bitnami PostgreSQL (shared database)
 - Ingress configuration (combined frontend/backend routing)
 - Dockerfiles (multi-stage prod, dev variants with hot reload)
-- Database schema (`table_creation.sql`) for DAG structure
+- Database schema (`table_creation.sql`) for DAG structure - DEPRECATED, use Hasura migrations
 - Tilt dev iteration setup
 
 ### Skeletal (Minimal Implementation)
@@ -70,9 +74,8 @@ This project follows a **six-layer architecture** (see FILE_STRUCTURE.md):
 - Authentication/authorization
 - CI/CD pipelines (GitHub Actions)
 - Build/push/deploy scripts
-- **Hasura GraphQL engine integration**
-- **Database migration strategy** (Hasura migrations)
-- **Hasura metadata configuration** (tables, permissions, relationships)
+- **Hasura metadata configuration**: Tables, relationships, permissions (via console)
+- **Hasura migrations**: Create initial migration from schema
 
 ---
 
@@ -86,10 +89,11 @@ This project follows a **six-layer architecture** (see FILE_STRUCTURE.md):
 ├── deploy/values/              # Per-service values (backend, frontend, postgres, pgweb, hasura)
 ├── charts/frontend/            # Frontend Helm chart
 ├── charts/backend/             # Backend Helm chart
-├── charts/hasura/              # Hasura GraphQL engine Helm chart
 ├── hasura/                     # Hasura project configuration
+│   ├── config.yaml             # CLI configuration
 │   ├── migrations/             # Database schema migrations (up.sql/down.sql)
-│   └── metadata/               # Declarative Hasura configuration (tables, permissions)
+│   ├── metadata/               # Declarative Hasura configuration (tables, permissions)
+│   └── README.md               # Hasura setup and workflow documentation
 ├── workspace/
 │   ├── apps/backend/           # Express server, Dockerfiles
 │   ├── apps/frontend/          # React app, Dockerfiles, Vite config
@@ -119,6 +123,12 @@ From `table_creation.sql`:
 
 ```bash
 tilt up                    # Start dev environment with hot reload
+
+# Hasura
+hasura console             # Open Hasura console (requires hasura CLI)
+hasura migrate create      # Create new migration from current schema
+hasura metadata export     # Export metadata to version control
+hasura migrate apply       # Apply pending migrations
 
 helmfile -e dev apply      # Deploy to dev cluster
 helmfile -e prod apply     # Deploy to prod cluster
@@ -163,9 +173,9 @@ helmfile -e prod diff      # Preview prod changes
 ## Notes for Future Development
 
 ### Database Priorities
-1. **Hasura migrations setup**: Create initial migration from schema
-2. **Migration workflow**: Decide between init container, manual job, or Hasura console
-3. **Schema evolution**: Plan for incremental migrations (up.sql/down.sql pattern)
+1. **Hasura metadata setup**: Use console to configure tables, relationships, permissions
+2. **Hasura migrations**: Create initial migration from schema using `hasura migrate create`
+3. **Migration workflow**: Manual apply during development, automate for production
 
 ### Backend Priorities (With Hasura)
 - Backend may be minimized or removed - CRUD handled by Hasura
