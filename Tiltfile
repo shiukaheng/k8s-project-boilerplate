@@ -27,6 +27,7 @@ k8s_yaml(helmfile("deploy/helmfile.yaml"))
 # Base infrastructure
 k8s_resource(
   workload='postgres-postgresql',
+  port_forwards=15432,
 )
 
 # Web UI for database
